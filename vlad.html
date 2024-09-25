@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heart Emoji Burst</title>
+    <title>Emoji Burst</title>
     <style>
         /* Style for the background */
         body, html {
@@ -22,15 +22,15 @@
             position: relative;
         }
 
-        /* Style for the hearts */
-        .heart {
+        /* Style for the hearts/rainbows */
+        .emoji {
             position: absolute;
-            font-size: 24px;
+            font-size: 48px; /* Twice the size of the original 24px */
             animation: fly 1.5s ease-out forwards;
             opacity: 0;
         }
 
-        /* Keyframes for heart animation flying in random directions */
+        /* Keyframes for emoji animation flying in random directions */
         @keyframes fly {
             0% {
                 transform: translate(0, 0) scale(0.5);
@@ -47,27 +47,32 @@
     <div class="background" id="background"></div>
 
     <script>
-        // Function to generate random hearts with random flight directions
-        function createHearts(x, y) {
-            const heartCount = 10; // Number of hearts to generate
-            for (let i = 0; i < heartCount; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.style.left = `${x - 12}px`; // Center the heart
-                heart.style.top = `${y - 12}px`;  // Center the heart
-                heart.textContent = '❤️';
+        let tapCount = 0; // Keep track of the number of taps
 
-                // Randomly generate movement distances for each heart
+        // Function to generate random hearts or rainbows with random flight directions
+        function createEmojis(x, y) {
+            const emojiCount = 10; // Number of emojis to generate
+            const isRainbowBurst = (tapCount % 5 === 0); // Check if it's the fifth tap
+            const emoji = isRainbowBurst ? '🌈' : '❤️'; // Rainbow on every 5th tap, hearts otherwise
+            
+            for (let i = 0; i < emojiCount; i++) {
+                const element = document.createElement('div');
+                element.className = 'emoji';
+                element.style.left = `${x - 24}px`; // Center the emoji (48px size)
+                element.style.top = `${y - 24}px`;  // Center the emoji (48px size)
+                element.textContent = emoji;
+
+                // Randomly generate movement distances for each emoji
                 const randomX = (Math.random() * 200 - 100) + 'px'; // Range from -100px to +100px
                 const randomY = (Math.random() * 200 - 100) + 'px'; // Range from -100px to +100px
-                heart.style.setProperty('--x-move', randomX);
-                heart.style.setProperty('--y-move', randomY);
+                element.style.setProperty('--x-move', randomX);
+                element.style.setProperty('--y-move', randomY);
 
-                document.body.appendChild(heart);
+                document.body.appendChild(element);
 
-                // Remove the heart after the animation ends
+                // Remove the emoji after the animation ends
                 setTimeout(() => {
-                    heart.remove();
+                    element.remove();
                 }, 1500);
             }
         }
@@ -76,7 +81,8 @@
         document.getElementById('background').addEventListener('click', (e) => {
             const x = e.clientX;
             const y = e.clientY;
-            createHearts(x, y);
+            tapCount++; // Increment tap count
+            createEmojis(x, y);
         });
 
         // For touch events on mobile devices
@@ -84,7 +90,8 @@
             const touch = e.touches[0];
             const x = touch.clientX;
             const y = touch.clientY;
-            createHearts(x, y);
+            tapCount++; // Increment tap count
+            createEmojis(x, y);
         });
     </script>
 </body>
