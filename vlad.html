@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Emoji Burst</title>
+    <style>
+        /* Style for the background */
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .background {
+            background-image: url('vlad.jpeg'); /* Replace with your background image */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        /* Style for the hearts */
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            animation: fly 1.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Keyframes for heart animation flying in random directions */
+        @keyframes fly {
+            0% {
+                transform: translate(0, 0) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x-move), var(--y-move)) scale(1.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background" id="background"></div>
+
+    <script>
+        // Function to generate random hearts with random flight directions
+        function createHearts(x, y) {
+            const heartCount = 10; // Number of hearts to generate
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = `${x - 12}px`; // Center the heart
+                heart.style.top = `${y - 12}px`;  // Center the heart
+                heart.textContent = '❤️';
+
+                // Randomly generate movement distances for each heart
+                const randomX = (Math.random() * 200 - 100) + 'px'; // Range from -100px to +100px
+                const randomY = (Math.random() * 200 - 100) + 'px'; // Range from -100px to +100px
+                heart.style.setProperty('--x-move', randomX);
+                heart.style.setProperty('--y-move', randomY);
+
+                document.body.appendChild(heart);
+
+                // Remove the heart after the animation ends
+                setTimeout(() => {
+                    heart.remove();
+                }, 1500);
+            }
+        }
+
+        // Add an event listener to detect click on the background
+        document.getElementById('background').addEventListener('click', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            createHearts(x, y);
+        });
+
+        // For touch events on mobile devices
+        document.getElementById('background').addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            const x = touch.clientX;
+            const y = touch.clientY;
+            createHearts(x, y);
+        });
+    </script>
+</body>
+</html>
