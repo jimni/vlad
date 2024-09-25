@@ -11,12 +11,14 @@
             padding: 0;
             overflow: hidden;
             height: 100%;
+            background-color: black; /* Set the background color to black */
         }
 
         .background {
             background-image: url('vlad.jpeg'); /* Replace with your background image */
-            background-size: cover;
+            background-size: contain; /* Make sure the entire image fits within the view */
             background-position: center;
+            background-repeat: no-repeat;
             height: 100vh;
             width: 100vw;
             position: relative;
@@ -25,7 +27,7 @@
         /* Style for the hearts/rainbows */
         .emoji {
             position: absolute;
-            font-size: 48px; /* Twice the size of the original 24px */
+            font-size: 96px; /* Twice the size of the previously doubled size (48px) */
             animation: fly 1.5s ease-out forwards;
             opacity: 0;
         }
@@ -58,8 +60,8 @@
             for (let i = 0; i < emojiCount; i++) {
                 const element = document.createElement('div');
                 element.className = 'emoji';
-                element.style.left = `${x - 24}px`; // Center the emoji (48px size)
-                element.style.top = `${y - 24}px`;  // Center the emoji (48px size)
+                element.style.left = `${x - 48}px`; // Center the emoji (96px size)
+                element.style.top = `${y - 48}px`;  // Center the emoji (96px size)
                 element.textContent = emoji;
 
                 // Randomly generate movement distances for each emoji
